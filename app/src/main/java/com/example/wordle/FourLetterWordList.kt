@@ -1,4 +1,4 @@
-package layout
+package com.example.wordle
 
 // author: calren
 object FourLetterWordList {
