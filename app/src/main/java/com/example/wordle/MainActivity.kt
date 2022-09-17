@@ -2,10 +2,13 @@ package com.example.wordle
 
 
 //import android.R
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -69,13 +72,13 @@ class MainActivity : AppCompatActivity() {
                 //displaying user guess and guess check
                 if(guessCounter==1){
                     guess1.text=strValue
-                    guessCheckResult = checkGuess(strValue.toUpperCase(Locale.ROOT))
+                    guessCheckResult = checkGuess(strValue.uppercase())
                     guessCheck1.text = guessCheckResult
                     Log.d("Testing1",guessCheckResult)
                 }
                 if(guessCounter==2){
                     guess2.text=strValue
-                    guessCheckResult = checkGuess(strValue.toUpperCase(Locale.ROOT))
+                    guessCheckResult = checkGuess(strValue.uppercase())
                     guessCheck2.text = guessCheckResult
                     Log.d("Testing2",guessCheckResult)
                 }
@@ -84,18 +87,21 @@ class MainActivity : AppCompatActivity() {
                     guessButton.text = "New Game"
 
                     guess3.text=strValue
-                    guessCheckResult = checkGuess(strValue.toUpperCase(Locale.ROOT))
+                    guessCheckResult = checkGuess(strValue.uppercase())
                     guessCheck3.text = guessCheckResult
 
                     //make wordToGuess visible
                     correctWord.text=wordToGuess
                     correctWord.isVisible=true
                 }
-                //reser editText for user
+                //reset editText for user
                 userGuess.setText("")
             }//end of else
+
+            hideKeyboard()
         }
     }
+
 
     private fun checkGuess(guess: String) : String {
         var result = ""
@@ -113,5 +119,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return result
+    }
+
+    private fun hideKeyboard() {
+        val view = this.currentFocus
+        if (view!=null){
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+
     }
 }
